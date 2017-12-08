@@ -1,22 +1,16 @@
 class Api::DirectoriesController < ApplicationController
   def index 
     @directories = Directory.all 
-    
-    # @parsed_directories = @directories.map { |dir| {dir.name => dir.directory} }
-    # 
     render json: @directories
   end 
   
   def show 
     @directory = Directory.find_by(id: params[:id])
-    
-    # @parsed_dir = eval(directory.directory)
-    
     render json: @directory
   end 
   
   def create 
-    test_for_hash(params['directory_info']['directory']))
+    # test_for_hash(params['directory_info']['directory'])
     
     @directory = Directory.new(directory_params)
     
@@ -28,11 +22,10 @@ class Api::DirectoriesController < ApplicationController
   end 
   
   def update 
-    test_for_hash(params['directory_info']['directory']))
+    # test_for_hash(params['directory_info']['directory'])
     
     @directory = Directory.find_by(id: params[:id])
-    debugger
-    
+
     if !@directory.nil?
       if @directory.update_attributes(directory_params) 
         render json: @directory
@@ -50,12 +43,15 @@ class Api::DirectoriesController < ApplicationController
   
   private 
   
-  def test_for_hash(hash)
-    if eval(hash.is_a?(Hash))
-      render json: {errors: ["Not a hash directory"]}, status: 404
-    end  
-  end 
-  
+  # def test_for_hash(hash)
+  #   begin
+  #     eval(hash)
+  #   rescue
+  #     render json: {errors: ["Not a hash directory"]}, status: 404
+  #   end  
+  #   return true
+  # end 
+  # 
   def directory_params
     params.require(:directory_info).permit(:name, :directory)
   end
