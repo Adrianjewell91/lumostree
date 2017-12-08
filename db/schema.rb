@@ -22,5 +22,4 @@ ActiveRecord::Schema.define(version: 20171208220633) do
     t.string "name", null: false
     t.index ["directory"], name: "index_directories_on_directory"
   end
-
 end
