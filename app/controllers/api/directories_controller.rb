@@ -16,12 +16,10 @@ class Api::DirectoriesController < ApplicationController
   end 
   
   def create 
-    #How does the route accept information 
-    #How to make sure that the information is a hash
-    # #And make sure that the information is returned correctly. 
-    debugger
+    test_for_hash(params['directory_info']['directory']))
+    
     @directory = Directory.new(directory_params)
-
+    
     if @directory.save 
       render json: @directory
     else 
@@ -30,17 +28,33 @@ class Api::DirectoriesController < ApplicationController
   end 
   
   def update 
+    test_for_hash(params['directory_info']['directory']))
     
     @directory = Directory.find_by(id: params[:id])
+    debugger
+    
+    if !@directory.nil?
+      if @directory.update_attributes(directory_params) 
+        render json: @directory
+      else
+        render json: @directory.errors.full_messages, status: 422
+      end
+    else
+      render json: {errors: ["Not Found"]}, status: 404
+    end
     
   end 
   
-  def destroy 
-    
-    
+  def destroy
   end 
   
   private 
+  
+  def test_for_hash(hash)
+    if eval(hash.is_a?(Hash))
+      render json: {errors: ["Not a hash directory"]}, status: 404
+    end  
+  end 
   
   def directory_params
     params.require(:directory_info).permit(:name, :directory)
