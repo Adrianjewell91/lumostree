@@ -52,6 +52,7 @@ class Api::DirectoriesController < ApplicationController
   #   return true
   # end 
   # 
+  
   def directory_params
     params.require(:directory_info).permit(:name, :directory)
   end
